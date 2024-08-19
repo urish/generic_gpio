@@ -10,6 +10,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        target:
+          - esp32c3
+          - esp32c6
+      fail-fast: false
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -17,10 +24,11 @@ jobs:
       - name: Build project
         uses: espressif/esp-idf-ci-action@v1
         with:
-          target: esp32c3
+          target: ${{ matrix.target }}
 
       - name: Test with Wokwi
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
           scenario: button.scenario.yaml
+          diagram_file: diagram.${{ matrix.target }}.json
