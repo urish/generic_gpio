@@ -1,0 +1,26 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build project
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          target: esp32c3
+
+      - name: Test with Wokwi
+        uses: wokwi/wokwi-ci-action@v1
+        with:
+          token: ${{ secrets.WOKWI_CLI_TOKEN }}
+          scenario: button.scenario.yaml
