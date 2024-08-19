@@ -1,0 +1,17 @@
+name: 'Test button press'
+version: 1
+author: 'Uri'
+
+steps:
+  # List of steps:
+  - wait-serial: "cnt: 0"
+  - set-control:
+      part-id: btn1
+      control: pressed
+      value: 1
+  - delay: 100ms
+  - set-control:
+      part-id: btn1
+      control: pressed
+      value: 0
+  - wait-serial: 'GPIO[5] intr, val: 1'
